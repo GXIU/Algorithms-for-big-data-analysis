@@ -56,24 +56,23 @@
 
 \section*{问题描述}
 
-这次应该不会自动编译了吧。。。
+我们研究了从大量测度中进行相位恢复的问题。特别的，我们希望重建一个复值信号$\mathbf{x}in C^n,$ 我们对其进行了一个无相采样：$y_r = |\langle \mathbf{a}_r,\mathbf{x}\rangle|^2, r = 1,\dots,m$（已知这些相的样本可以生成一个线性系统。）这篇文章提出了一个非凸的相位恢复问题，和它的一个紧致解。
 
-我们要实现下面两个算法之一。
+简而言之，这个算法开始于一个基于谱方法生成的初始值，然后通过迭代低复杂度的初始更新规则，提炼一个初始估计。这个过程跟梯度下降是很像的。这个算法的主要贡献是证明了相位恢复问题可以用几乎是最少的随机度量得到。实际上，可以证明一系列的迭代可以以几何速度收敛到真实解。理论上，这个算法可以导出一个接近线性时间的模型实现。
 
-\subsection*{LinearTimeSVD算法}
+\section*{相变}
 
-线性时间SVD算法的策略是：选取矩阵$A$的$c$列，每列重新标注，形成一个新矩阵$C\in\mathbb{R}_{m\times c}.$ 然后通过对$C^TC$进行通常的SVD分解，计算$C$的奇异值和左奇异向量。这可以近似$A$的奇异值和左奇异向量。
+\subsection*{信号模型}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics{ltsvd.png}
-    \caption{LinearTimeSVD算法}
-    \label{ltsvd}
-\end{figure}
+\subsubsection*{随机低通信号}
 
-图片\ref{ltsvd}是该算法的示意图。
+这里，$\mathbf{x}$由下式给定：
+$$x[t]=\sum_{k=-(M/2-1)}^{M/2} (X_k+iY_k) e^{2\pi i(k-1)(t-1)/n},$$
+其中$M = n/8, X_k,Y_k$是服从$\mathcal{N}(0,1)$的独立同分布的。
 
-\subsection*{Proto-Algorithm: Solving the Fixed-Rank Problem}
+\subsubsection*{随机高斯信号}
+
+这个模型中，$\mathbf{x} \in C^n$是一个复随机高斯向量。每一个维度的形式都是$x[t] = X+iY,$ 其中$X$和$Y$都是服从$\mathcal{N}(0,1)$;
 
 第二种算法的思路如下图\ref{pasfrp}所示：
 

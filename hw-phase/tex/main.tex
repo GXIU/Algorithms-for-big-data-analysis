@@ -72,71 +72,60 @@ $$x[t]=\sum_{k=-(M/2-1)}^{M/2} (X_k+iY_k) e^{2\pi i(k-1)(t-1)/n},$$
 
 \subsubsection*{随机高斯信号}
 
-这个模型中，$\mathbf{x} \in C^n$是一个复随机高斯向量。每一个维度的形式都是$x[t] = X+iY,$ 其中$X$和$Y$都是服从$\mathcal{N}(0,1)$;
+这个模型中，$\mathbf{x} \in C^n$是一个复随机高斯向量。每一个维度的形式都是$x[t] = X+iY,$ 其中$X$和$Y$都是服从$\mathcal{N}(0,1).$
 
-第二种算法的思路如下图\ref{pasfrp}所示：
+\subsection*{测度方法}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width = 0.5\textwidth]{randomizedprototype.png}
-    \caption{Proto-Algorithm: Solving the Fixed-Rank Problem}
-    \label{pasfrp}
-\end{figure}
+两种方式：
 
-我在这次作业中，选择了第一种算法，用python语言对其进行实现。
+\subsubsection*{高斯测度}
+
+采样$m=nL$个随机复高斯向量$\mathbf{a}_k$使用如下的形式进行测度：$|\mathbf{a}_k^*\mathbf{x}|^2.$
+
+\subsubsection*{衍射图案}
+
+考虑获得性模型：
+$y_r = \left| \sum_{t = 0}^{n-1} x[t] \bar{d}_l(t) e^{-i2\pi k t/n}   \right|^2,$ 其中$r = (l, k),0 \le k \le n-1, \le l \le L .$
 
 \section*{实验}
 
+我们进行了三组实验，得到的结果都是收敛的。运行时间小于1s。
+
 \subsection*{随机生成数据}
 
-通过下面的设置取得一个矩阵，并求出其前$r\in\{5,10,15,20\}$大的奇异值，以及其奇异向量。
+首先通过高斯分布生成随机信号，并取$m/n=4.5.$ 定义初始值如下：
 
 \begin{lstlisting}[language={python}]
-    m = 2048
-    n = 512
-    p = 20
-    A = randn(m,p)*randn(p,n)
+    n = 128
+    m = 576
+    x = Re(x) + i*Im(x)
+    A = randn(m,n)+i*randn(m,n)
 \end{lstlisting}
 
 得到的结果如下：
 
 \begin{table}[h]
 \centering
-\begin{tabular}{|l|l|l|l|}
+\begin{tabular}{|l|l|}
 \hline
-$r$ & exp1: $t$ & exp2: $t$ & exp3: $t$\\ \hline
- 5 &    0.08126497268676758  &  0.06409597396850586   & 0.07390093803405762 \\ \hline
-10 &   0.03443193435668945   & 0.025016069412231445 & 0.03003096580505371
-\\ \hline
-15 & 0.03320908546447754 &   0.035800933837890625  & 0.03665590286254883
-  \\ \hline
-20 & 0.034197092056274414 & 0.03660106658935547 & 0.040490150451660156 \\ \hline
+ 初始相对误差 & 2500次迭代结果\\ \hline
+ 1.0489348203835522& 3.9402815057984826e-15 \\ \hline
+ 1.03898179977986 & 1.4300247639334214e-15 \\ \hline
+ 1.0162443311529112 &4.772241069328224e-14 \\ \hline
 \end{tabular}
 \end{table}
 
-我对$r=\{5,10,15,20\}$进行了3组实验，得到的运行时间如上表所示。可见运行时间较为稳定，可以在线性时间内运行完毕。
+我将运行误差随迭代次数的变化绘制成如下的图：
 
-\subsection*{rSVD-single-pass数据集}
-
-这个部分里，我复现了\url{https://github.com/WenjianYu/rSVD-single-pass}中生成随机数据集的算法，写在\emph{generatedata.py}文件中。并测试了对于$m = n = 2\times 10^3.$ 的矩阵的计算时间的三次试验结果\footnote{我尝试生成了$2\times 10^5$阶矩阵的数据集，但是内存超了，所以没有呈现在报告上。特此说明。}。
-
-\begin{table}[h]
-\centering
-\begin{tabular}{|l|l|l|l|}
-\hline
-r & exp1-timing & exp2-timing & exp3-timing \\ \hline
-  50  & 0.4229423999786377 &0.4193081855773926& 0.4090569019317627 \\ \hline
- 100  & 0.4109618663787842&0.5056757926940918& 0.4087069034576416\\ \hline
- 150  & 0.451876163482666&0.4589710235595703& 0.43385791778564453\\ \hline
- 200  & 0.5109848976135254&0.5014669895172119& 0.4837648868560791\\ \hline
- 500  & 0.994359016418457&0.9467556476593018& 0.9239499568939209\\ \hline
- 1000  & 2.2344188690185547&2.214768886566162& 2.300198793411255\\ \hline
- 1500  & 4.6173412799835205& 4.693850994110107& 4.715956926345825\\ \hline
-\end{tabular}
-\end{table}
-
-可见，运行时间比较稳定，算法是有效的。
-
+\begin{figure}
+  \centering
+  \includegraphics[width = 0.5\textwidth]{Figure_1.png}
+  \caption{实验 1}
+  \includegraphics[width = 0.5\textwidth]{Figure_2.png}
+  \caption{实验 2}
+  \includegraphics[width = 0.5\textwidth]{Figure_3.png}
+  \caption{实验 3}
+\end{figure}
 
 
 \end{document}

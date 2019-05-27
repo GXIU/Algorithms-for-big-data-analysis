@@ -39,7 +39,7 @@ def df(y,w,x,ld = ld):
     return d
 
 # adam
-def adam_train(epoches = 20 , batch_size = 1000, beta_1 = 0.9, beta_2 = 0.999, alpha = 1e-3, ld = 1, epsilon = 1e-8):
+def adam_train(epoches = 20 , batch_size = 1, beta_1 = 0.9, beta_2 = 0.999, alpha = 1e-3, ld = 1, epsilon = 1e-8):
     t = 0
     w = np.random.randn(784)
     mt = np.zeros(784)

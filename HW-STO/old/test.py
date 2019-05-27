@@ -22,12 +22,12 @@ def test(filename, test_data):
     return accuracy
 
 
-test('./adam_results/adam_result_with_lambda_equals_to_0.001', train_data)
-test('./adam_results/adam_result_with_lambda_equals_to_0.1', test_data)
-test('./adam_results/adam_result_with_lambda_equals_to_1', test_data)
-test('./adam_results/adam_result_with_lambda_equals_to_10', test_data)
+test('./adam_results/adam_result_with_lambda_equals_to_0.001.txt', train_data)
+test('./adam_results/adam_result_with_lambda_equals_to_0.1.txt', test_data)
+test('./adam_results/adam_result_with_lambda_equals_to_1.txt', test_data)
+test('./adam_results/adam_result_with_lambda_equals_to_10.txt', test_data)
 
-test('./Nesterov_results/Nesterov_result_with_lambda_equals_to_0.0001', test_data)
-test('./Nesterov_results/Nesterov_result_with_lambda_equals_to_0.1', test_data)
-test('./Nesterov_results/Nesterov_result_with_lambda_equals_to_1', test_data)
-test('./Nesterov_results/Nesterov_result_with_lambda_equals_to_10', test_data)
+test('./Nesterov_results/Nesterov_result_with_lambda_equals_to_0.0001.txt', test_data)
+test('./Nesterov_results/Nesterov_result_with_lambda_equals_to_0.1.txt', test_data)
+test('./Nesterov_results/Nesterov_result_with_lambda_equals_to_1.txt', test_data)
+test('./Nesterov_results/Nesterov_result_with_lambda_equals_to_10.txt', test_data)

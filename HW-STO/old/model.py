@@ -31,7 +31,7 @@ def df(y, w, x, ld=ld):
         d += y[i] * temp * x[i].flatten() / (1 + temp)
     return d
 
-def adam_train(data, epoches = 20, batch_size = 1000, beta_1 = 0.9, beta_2 = 0.999, alpha = 1e2, ld = 1, eps = 1e-8):
+def adam_train(data, epoches = 20, batch_size = 1, beta_1 = 0.9, beta_2 = 0.999, alpha = 1e2, ld = 1, eps = 1e-8):
     t1 = time()
     t = 0
     w = np.zeros(784)
@@ -67,7 +67,7 @@ def adam_train(data, epoches = 20, batch_size = 1000, beta_1 = 0.9, beta_2 = 0.9
         loss.append(f(y_,w,x_))
             
         print(str(epoch+1)+' out of '+str(epoches)+' : finished, the present loss is '+ str(loss[-1]))
-    np.savetxt("adam_results/adam_result_with_lambda_equals_to_"+str(ld), w)
+    np.savetxt("adam_results/adam_result_with_lambda_equals_to_"+str(ld)+'.txt', w)
     t2 = time()
     print('total time used for '+str(epoches)+' epoches: '+str(t2-t1)+' s.')
     return w
@@ -82,7 +82,7 @@ adam_train(train_data,ld = 0.001)
 # total time used for 20 epoches: 24.603734731674194 s.
 ## w = numpy.loadtxt("filename.txt", delimiter=',')
 
-def Nesterov_train(data, epoches = 20 , batch_size = 1000, beta = 0.9, alpha = 1e-3, ld = 1, eps = 1e-2):
+def Nesterov_train(data, epoches = 20 , batch_size = 1, beta = 0.9, alpha = 1e-3, ld = 1, eps = 1e-2):
     v = np.zeros(784)
     # w = np.random.randn(784) / 1e10
     w = np.zeros(784)
@@ -109,7 +109,7 @@ def Nesterov_train(data, epoches = 20 , batch_size = 1000, beta = 0.9, alpha = 1
 
             w += v
         print(str(epoch + 1) + ' out of ' + str(epoches) + ' : finished.')
-    np.savetxt("Nesterov_results/Nesterov_result_with_lambda_equals_to_" + str(ld), w)
+    np.savetxt("Nesterov_results/Nesterov_result_with_lambda_equals_to_" + str(ld)+'.txt', w)
     t2 = time()
     print('total time used for ' + str(epoches) + ' epoches: ' + str(t2 - t1) + ' s.')
     return w
